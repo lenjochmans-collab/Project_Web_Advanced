@@ -3,7 +3,7 @@
  * Verzorgt DOM manipulatie en weergave van films
  */
 
-import { getPopularMovies, getPosterUrl } from './api.js';
+import { getPopularMovies, getTopRatedMovies, getPosterUrl } from './api.js';
 import { addFavorite, removeFavorite, isFavorite } from './favorites.js';
 
 let currentMovies = [];
@@ -21,6 +21,17 @@ export async function initUI() {
     // Event listeners voor view toggle
     document.getElementById('gridViewBtn').addEventListener('click', () => switchView('grid'));
     document.getElementById('listViewBtn').addEventListener('click', () => switchView('list'));
+
+    // Event listeners voor navigatie
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleNavClick(e.target.closest('.nav-link'));
+        });
+    });
+
+    // Event listener voor favorieten dropdown
+    document.getElementById('favoritesDropdown').addEventListener('click', viewFavorites);
 }
 
 /**
@@ -179,6 +190,75 @@ function handleDetailsClick(e) {
 }
 
 /**
+ * Haalt upcoming films op
+ * @returns {Promise<Array>} Array van films
+ */
+async function getUpcomingMovies(page = 1) {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/upcoming?api_key=a0ab9fe4a5f4b23c5723b5f2fc500995&page=${page}&language=nl-NL`
+        );
+        const data = await response.json();
+        return data.results || [];
+    } catch (error) {
+        console.error('Fout bij ophalen upcoming films:', error);
+        return [];
+    }
+}
+
+/**
+ * Handelt navigatie menu clicks af
+ * @param {Element} linkElement - Geklikt link element
+ */
+async function handleNavClick(linkElement) {
+    // Update active state
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    linkElement.classList.add('active');
+
+    const view = linkElement.dataset.view;
+    const container = document.getElementById('moviesContainer');
+    container.innerHTML = '<div class="loading">Films laden...</div>';
+
+    try {
+        let movies = [];
+        
+        switch(view) {
+            case 'popular':
+                movies = await getPopularMovies();
+                break;
+            case 'upcoming':
+                movies = await getUpcomingMovies();
+                break;
+            case 'top-rated':
+                movies = await getTopRatedMovies();
+                break;
+            case 'search':
+                // Zet focus op zoekbalk
+                document.getElementById('searchInput').focus();
+                return;
+            default:
+                movies = await getPopularMovies();
+        }
+
+        currentMovies = movies;
+        displayMovies(movies);
+    } catch (error) {
+        console.error('Fout bij laden films:', error);
+        container.innerHTML = '<div class="empty-state">Fout bij laden films. Probeer later opnieuw.</div>';
+    }
+}
+
+/**
+ * Wrapper voor viewFavorites
+ */
+async function viewFavorites() {
+    const { viewFavorites: showFavorites } = await import('./favorites.js');
+    showFavorites();
+}
+
+/**
  * Switcht tussen grid en list view
  * @param {string} view - 'grid' of 'list'
  */
@@ -194,6 +274,10 @@ function switchView(view) {
 }
 
 /**
- * Exporteer loadMovies voor externe gebruik
+ * Haalt huidige films op
  */
+export function getCurrentMovies() {
+    return currentMovies;
+}
+
 export { loadMovies };

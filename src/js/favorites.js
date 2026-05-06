@@ -4,6 +4,8 @@
  */
 
 const STORAGE_KEY = 'movieDatabase_favorites';
+let displayMoviesFunc = null;
+let loadMoviesFunc = null;
 
 /**
  * Initialiseert favorites module
@@ -11,12 +13,22 @@ const STORAGE_KEY = 'movieDatabase_favorites';
 export function initFavorites() {
     console.log('Favorites initialiseren...');
 
-    // Event listeners
-    document.getElementById('viewFavoritesBtn').addEventListener('click', viewFavorites);
-    document.getElementById('clearFavoritesBtn').addEventListener('click', clearFavorites);
+    // Event listeners (only if elements exist)
+    const favBtn = document.getElementById('favoritesDropdown');
+    if (favBtn) {
+        favBtn.addEventListener('click', viewFavorites);
+    }
 
     // Load en display favorieten
     displayFavoritesList();
+}
+
+/**
+ * Set UI functions (to avoid circular imports)
+ */
+export function setUIFunctions(displayMovies, loadMovies) {
+    displayMoviesFunc = displayMovies;
+    loadMoviesFunc = loadMovies;
 }
 
 /**
@@ -79,6 +91,8 @@ function displayFavoritesList() {
     const favoritesList = document.getElementById('favoritesList');
     const favorites = getFavorites();
 
+    if (!favoritesList) return;
+
     if (favorites.length === 0) {
         favoritesList.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem;">Geen favorieten nog.</p>';
         return;
@@ -112,9 +126,13 @@ async function viewFavorites() {
         return;
     }
 
-    // Import displayMovies van ui.js
-    const { displayMovies } = await import('./ui.js');
-    displayMovies(favorites);
+    // Use the set function or dynamic import
+    if (displayMoviesFunc) {
+        displayMoviesFunc(favorites);
+    } else {
+        const { displayMovies } = await import('./ui.js');
+        displayMovies(favorites);
+    }
 }
 
 /**
@@ -127,8 +145,11 @@ function clearFavorites() {
         displayFavoritesList();
         
         // Refresh huidige weergave
-        const { loadMovies } = require('./ui.js');
-        loadMovies();
+        if (loadMoviesFunc) {
+            loadMoviesFunc();
+        } else {
+            import('./ui.js').then(({ loadMovies }) => loadMovies());
+        }
     }
 }
 

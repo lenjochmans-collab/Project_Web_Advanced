@@ -4,7 +4,7 @@
  */
 
 import { getFilteredMovies, getGenres } from './api.js';
-import { displayMovies } from './ui.js';
+import { displayMovies, loadMovies } from './ui.js';
 
 /**
  * Initialiseert filter module
@@ -88,7 +88,6 @@ function resetFilters() {
     document.getElementById('sortFilter').value = 'popularity';
 
     // Laad populaire films opnieuw
-    const { loadMovies } = require('./ui.js');
     loadMovies();
 }
 

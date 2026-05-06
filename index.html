@@ -7,120 +7,138 @@
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header with Navigation -->
     <header class="header">
-        <div class="header-content">
-            <h1 class="logo">🎬 Movie Database</h1>
-            <div class="header-controls">
-                <input type="text" id="searchInput" class="search-bar" placeholder="Zoek een film...">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo-section">
+                <h1 class="logo">🎬 MovieDB</h1>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active" data-view="popular">🔥 Trending</a>
+                <a href="#" class="nav-link" data-view="upcoming">📅 Upcoming</a>
+                <a href="#" class="nav-link" data-view="top-rated">⭐ Top Rated</a>
+                <a href="#" class="nav-link" data-view="search">🔍 Discover</a>
+            </nav>
+
+            <!-- Header Controls (Search + Theme) -->
+            <div class="header-right">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-bar" placeholder="Zoek een film...">
+                    <span class="search-icon">🔍</span>
+                </div>
                 <button id="themeToggle" class="theme-btn">🌙</button>
+                <button id="favoritesDropdown" class="favorites-btn">❤️ Favorieten</button>
             </div>
         </div>
     </header>
 
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-bar-content">
+            <!-- Genre Filter -->
+            <div class="filter-item">
+                <label>Genre:</label>
+                <select id="genreFilter" class="filter-select">
+                    <option value="">Alle genres</option>
+                    <option value="28">Action</option>
+                    <option value="12">Adventure</option>
+                    <option value="16">Animation</option>
+                    <option value="35">Comedy</option>
+                    <option value="80">Crime</option>
+                    <option value="99">Documentary</option>
+                    <option value="18">Drama</option>
+                    <option value="10751">Family</option>
+                    <option value="14">Fantasy</option>
+                    <option value="36">History</option>
+                    <option value="27">Horror</option>
+                    <option value="10402">Music</option>
+                    <option value="9648">Mystery</option>
+                    <option value="10749">Romance</option>
+                    <option value="878">Sci-Fi</option>
+                    <option value="53">Thriller</option>
+                    <option value="10752">War</option>
+                    <option value="37">Western</option>
+                </select>
+            </div>
+
+            <!-- Year Filter -->
+            <div class="filter-item">
+                <label>Jaar:</label>
+                <select id="yearFilter" class="filter-select">
+                    <option value="">Alle jaren</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                </select>
+            </div>
+
+            <!-- Rating Filter -->
+            <div class="filter-item">
+                <label>Rating:</label>
+                <div class="rating-control">
+                    <input type="range" id="ratingFilter" class="filter-range" min="0" max="10" value="0">
+                    <span class="rating-value" id="ratingValue">0</span>/10
+                </div>
+            </div>
+
+            <!-- Sort Filter -->
+            <div class="filter-item">
+                <label>Sorteren:</label>
+                <select id="sortFilter" class="filter-select">
+                    <option value="popularity">Populariteit</option>
+                    <option value="rating">Rating</option>
+                    <option value="release_date">Nieuwste</option>
+                    <option value="title">Titel (A-Z)</option>
+                </select>
+            </div>
+
+            <!-- Language Filter -->
+            <div class="filter-item">
+                <label>Taal:</label>
+                <select id="languageFilter" class="filter-select">
+                    <option value="">Alle talen</option>
+                    <option value="en">Engels</option>
+                    <option value="nl">Nederlands</option>
+                    <option value="es">Spaans</option>
+                    <option value="fr">Frans</option>
+                    <option value="de">Duits</option>
+                </select>
+            </div>
+
+            <!-- Buttons -->
+            <div class="filter-buttons">
+                <button id="applyFilters" class="btn-apply">⚙️ Toepassen</button>
+                <button id="resetFilters" class="btn-reset">🔄 Reset</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Container -->
     <main class="container">
-        <!-- Sidebar - Filters -->
-        <aside class="sidebar">
-            <div class="filter-section">
-                <h2>Filters</h2>
-                
-                <!-- Genre Filter -->
-                <div class="filter-group">
-                    <label for="genreFilter">Genre:</label>
-                    <select id="genreFilter" class="filter-select">
-                        <option value="">Alle genres</option>
-                        <option value="28">Action</option>
-                        <option value="12">Adventure</option>
-                        <option value="16">Animation</option>
-                        <option value="35">Comedy</option>
-                        <option value="80">Crime</option>
-                        <option value="99">Documentary</option>
-                        <option value="18">Drama</option>
-                        <option value="10751">Family</option>
-                        <option value="14">Fantasy</option>
-                        <option value="36">History</option>
-                        <option value="27">Horror</option>
-                        <option value="10402">Music</option>
-                        <option value="9648">Mystery</option>
-                        <option value="10749">Romance</option>
-                        <option value="878">Sci-Fi</option>
-                        <option value="53">Thriller</option>
-                        <option value="10752">War</option>
-                        <option value="37">Western</option>
-                    </select>
-                </div>
-
-                <!-- Year Filter -->
-                <div class="filter-group">
-                    <label for="yearFilter">Jaar:</label>
-                    <select id="yearFilter" class="filter-select">
-                        <option value="">Alle jaren</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                    </select>
-                </div>
-
-                <!-- Rating Filter -->
-                <div class="filter-group">
-                    <label for="ratingFilter">Minimale rating:</label>
-                    <input type="range" id="ratingFilter" class="filter-range" min="0" max="10" value="0">
-                    <span id="ratingValue">0</span>/10
-                </div>
-
-                <!-- Sort -->
-                <div class="filter-group">
-                    <label for="sortFilter">Sorteren:</label>
-                    <select id="sortFilter" class="filter-select">
-                        <option value="popularity">Populariteit</option>
-                        <option value="rating">Rating</option>
-                        <option value="release_date">Releasedatum</option>
-                        <option value="title">Titel (A-Z)</option>
-                    </select>
-                </div>
-
-                <!-- Buttons -->
-                <div class="filter-buttons">
-                    <button id="applyFilters" class="btn-primary">Toepassen</button>
-                    <button id="resetFilters" class="btn-secondary">Reset</button>
-                </div>
-            </div>
-
-            <!-- Favorites Section -->
-            <div class="favorites-section">
-                <h2>Favorieten</h2>
-                <button id="viewFavoritesBtn" class="btn-secondary">Toon favorieten</button>
-                <button id="clearFavoritesBtn" class="btn-secondary">Wis favorieten</button>
-                <div id="favoritesList" class="favorites-list"></div>
-            </div>
-        </aside>
-
         <!-- Content Area -->
         <section class="content">
             <!-- View Toggle -->
             <div class="view-controls">
                 <button id="gridViewBtn" class="view-btn active">⊞ Grid</button>
                 <button id="listViewBtn" class="view-btn">≡ Lijst</button>
-            </div>
+        </div>
 
-            <!-- Movies Grid -->
-            <div id="moviesContainer" class="movies-grid">
-                <!-- Movies zullen hier geladen worden -->
-                <div class="loading">Films laden...</div>
-            </div>
-        </section>
-    </main>
+        <!-- Movies Grid -->
+        <div id="moviesContainer" class="movies-grid">
+            <!-- Movies zullen hier geladen worden -->
+            <div class="loading">Films laden...</div>
+        </div>
+    </section>
+</main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Movie Database. Powered by <a href="https://www.themoviedb.org/" target="_blank">TMDB</a></p>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="src/js/main.js" type="module"></script>
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2025 MovieDB. Powered by <a href="https://www.themoviedb.org/" target="_blank">TMDB API</a></p>
 </body>
 </html>

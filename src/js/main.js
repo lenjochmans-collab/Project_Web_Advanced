@@ -4,10 +4,10 @@
  */
 
 import { initTheme } from './theme.js';
-import { initUI } from './ui.js';
+import { initUI, displayMovies, loadMovies } from './ui.js';
 import { initFilters } from './filters.js';
 import { initSearch } from './search.js';
-import { initFavorites } from './favorites.js';
+import { initFavorites, setUIFunctions } from './favorites.js';
 
 /**
  * Initialiseert alle modules
@@ -18,8 +18,9 @@ function init() {
     // Thema initialiseren
     initTheme();
 
-    // Favorieten laden
+    // Favorieten laden en UI functions doorgeven
     initFavorites();
+    setUIFunctions(displayMovies, loadMovies);
 
     // UI initialiseren
     initUI();
