@@ -7,130 +7,93 @@
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
-    <!-- Header with Navigation -->
+    <!-- Header with Filters and Controls -->
     <header class="header">
         <div class="header-container">
-            <!-- Logo -->
-            <div class="logo-section">
-                <h1 class="logo">🎬 MovieDB</h1>
-            </div>
-
-            <!-- Navigation Menu -->
-            <nav class="nav-menu">
-                <a href="#" class="nav-link active" data-view="popular">🔥 Trending</a>
-                <a href="#" class="nav-link" data-view="upcoming">📅 Upcoming</a>
-                <a href="#" class="nav-link" data-view="top-rated">⭐ Top Rated</a>
-                <a href="#" class="nav-link" data-view="search">🔍 Discover</a>
-            </nav>
-
-            <!-- Header Controls (Search + Theme) -->
-            <div class="header-right">
-                <div class="search-container">
-                    <input type="text" id="searchInput" class="search-bar" placeholder="Zoek een film...">
-                    <span class="search-icon">🔍</span>
-                </div>
-                <button id="themeToggle" class="theme-btn">🌙</button>
-                <button id="favoritesDropdown" class="favorites-btn">❤️ Favorieten</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Filter Bar -->
-    <div class="filter-bar">
-        <div class="filter-bar-content">
-            <!-- Genre Filter -->
-            <div class="filter-item">
-                <label>Genre:</label>
-                <select id="genreFilter" class="filter-select">
-                    <option value="">Alle genres</option>
-                    <option value="28">Action</option>
-                    <option value="12">Adventure</option>
-                    <option value="16">Animation</option>
-                    <option value="35">Comedy</option>
-                    <option value="80">Crime</option>
-                    <option value="99">Documentary</option>
+            <!-- Filter Dropdowns (Dark Grey) -->
+            <div class="filter-controls">
+                <!-- Genre Filter -->
+                <select id="genreFilter" class="filter-dropdown" title="Genre">
+                    <option value="">Genre</option>
+                    <option value="28">Actie</option>
+                    <option value="12">Avontuur</option>
+                    <option value="16">Animatie</option>
+                    <option value="35">Komedie</option>
+                    <option value="80">Misdaad</option>
+                    <option value="99">Documentaire</option>
                     <option value="18">Drama</option>
-                    <option value="10751">Family</option>
+                    <option value="10751">Familie</option>
                     <option value="14">Fantasy</option>
-                    <option value="36">History</option>
+                    <option value="36">Historie</option>
                     <option value="27">Horror</option>
-                    <option value="10402">Music</option>
+                    <option value="10402">Muziek</option>
                     <option value="9648">Mystery</option>
-                    <option value="10749">Romance</option>
+                    <option value="10749">Romantiek</option>
                     <option value="878">Sci-Fi</option>
                     <option value="53">Thriller</option>
-                    <option value="10752">War</option>
+                    <option value="10752">Oorlog</option>
                     <option value="37">Western</option>
                 </select>
-            </div>
 
-            <!-- Year Filter -->
-            <div class="filter-item">
-                <label>Jaar:</label>
-                <select id="yearFilter" class="filter-select">
-                    <option value="">Alle jaren</option>
+                <!-- Year Filter -->
+                <select id="yearFilter" class="filter-dropdown" title="Jaar">
+                    <option value="">Jaar</option>
                     <option value="2025">2025</option>
                     <option value="2024">2024</option>
                     <option value="2023">2023</option>
                     <option value="2022">2022</option>
                     <option value="2021">2021</option>
                     <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
                 </select>
-            </div>
 
-            <!-- Rating Filter -->
-            <div class="filter-item">
-                <label>Rating:</label>
-                <div class="rating-control">
-                    <input type="range" id="ratingFilter" class="filter-range" min="0" max="10" value="0">
-                    <span class="rating-value" id="ratingValue">0</span>/10
-                </div>
-            </div>
+                <!-- Rating Filter -->
+                <select id="ratingFilter" class="filter-dropdown" title="Beoordeling">
+                    <option value="">Beoordeling</option>
+                    <option value="9">9+ ⭐</option>
+                    <option value="8">8+ ⭐</option>
+                    <option value="7">7+ ⭐</option>
+                    <option value="6">6+ ⭐</option>
+                    <option value="5">5+ ⭐</option>
+                </select>
 
-            <!-- Sort Filter -->
-            <div class="filter-item">
-                <label>Sorteren:</label>
-                <select id="sortFilter" class="filter-select">
+                <!-- Sort Filter -->
+                <select id="sortFilter" class="filter-dropdown" title="Sorteren">
                     <option value="popularity">Populariteit</option>
-                    <option value="rating">Rating</option>
+                    <option value="rating">Beoordeling</option>
                     <option value="release_date">Nieuwste</option>
-                    <option value="title">Titel (A-Z)</option>
+                    <option value="title">Alfabetisch</option>
                 </select>
-            </div>
 
-            <!-- Language Filter -->
-            <div class="filter-item">
-                <label>Taal:</label>
-                <select id="languageFilter" class="filter-select">
-                    <option value="">Alle talen</option>
+                <!-- Language Filter -->
+                <select id="languageFilter" class="filter-dropdown" title="Taal">
+                    <option value="nl" selected>Taal</option>
                     <option value="en">Engels</option>
-                    <option value="nl">Nederlands</option>
-                    <option value="es">Spaans</option>
+                    <option value="nl" selected>Nederlands</option>
                     <option value="fr">Frans</option>
                     <option value="de">Duits</option>
+                    <option value="es">Spaans</option>
                 </select>
             </div>
 
-            <!-- Buttons -->
-            <div class="filter-buttons">
-                <button id="applyFilters" class="btn-apply">⚙️ Toepassen</button>
-                <button id="resetFilters" class="btn-reset">🔄 Reset</button>
+            <!-- Search Box (Light Grey) -->
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="Zoek films...">
+                <span class="search-icon">🔍</span>
             </div>
+
+            <!-- Favorites Star (Red) -->
+            <button id="favoritesBtn" class="favorites-star" title="Favorieten">⭐</button>
         </div>
-    </div>
+    </header>
 
     <!-- Main Container -->
     <main class="container">
         <!-- Content Area -->
         <section class="content">
-            <!-- View Toggle -->
-            <div class="view-controls">
-                <button id="gridViewBtn" class="view-btn active">⊞ Grid</button>
-                <button id="listViewBtn" class="view-btn">≡ Lijst</button>
-        </div>
-
-        <!-- Movies Grid -->
-        <div id="moviesContainer" class="movies-grid">
+            <!-- Movies Grid -->
+            <div id="moviesContainer" class="movies-grid">
             <!-- Movies zullen hier geladen worden -->
             <div class="loading">Films laden...</div>
         </div>

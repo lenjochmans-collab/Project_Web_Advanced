@@ -1,94 +1,73 @@
 /**
  * Filters Module
- * Verzorgt filter functionaliteit
+ * Handles real-time filtering
  */
 
 import { getFilteredMovies, getGenres } from './api.js';
 import { displayMovies, loadMovies } from './ui.js';
 
 /**
- * Initialiseert filter module
+ * Initialize filter module
  */
 export function initFilters() {
-    console.log('Filters initialiseren...');
+    console.log('Initializing filters...');
 
-    // Event listeners
-    document.getElementById('applyFilters').addEventListener('click', applyFilters);
-    document.getElementById('resetFilters').addEventListener('click', resetFilters);
-
-    // Rating slider
-    const ratingFilter = document.getElementById('ratingFilter');
-    const ratingValue = document.getElementById('ratingValue');
-    ratingFilter.addEventListener('input', (e) => {
-        ratingValue.textContent = e.target.value;
-    });
+    // Real-time filter event listeners
+    document.getElementById('genreFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('yearFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('ratingFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('sortFilter')?.addEventListener('change', applyFilters);
+    document.getElementById('languageFilter')?.addEventListener('change', applyFilters);
 
     // Load genres
     loadGenres();
 }
 
 /**
- * Laadt genres in dropdown
+ * Load genres into dropdown
  */
 async function loadGenres() {
     try {
         const genres = await getGenres();
-        // Genres zijn al hardcoded in HTML, maar dit kan gebruikt worden voor dynamisch laden
-        console.log('Genres geladen:', genres);
+        console.log('Genres loaded:', genres);
     } catch (error) {
-        console.error('Fout bij laden genres:', error);
+        console.error('Error loading genres:', error);
     }
 }
 
 /**
- * Appliceert geselecteerde filters
+ * Apply selected filters (real-time)
  */
 async function applyFilters() {
-    console.log('Filters toepassen...');
+    console.log('Applying filters...');
 
     const filters = {
-        withGenres: document.getElementById('genreFilter').value,
-        primaryReleaseYear: document.getElementById('yearFilter').value,
-        voteAverageGte: document.getElementById('ratingFilter').value,
-        sortBy: document.getElementById('sortFilter').value.split('_').join('.'),
-        page: 1
+        withGenres: document.getElementById('genreFilter').value || '',
+        year: document.getElementById('yearFilter').value || '',
+        vote_average_gte: document.getElementById('ratingFilter').value || 0,
+        sort_by: document.getElementById('sortFilter').value || 'popularity.desc',
+        with_original_language: document.getElementById('languageFilter').value || ''
     };
 
-    // Verwijder lege waarden
-    Object.keys(filters).forEach(key => {
-        if (filters[key] === '') {
-            delete filters[key];
-        }
-    });
-
-    console.log('Toegepaste filters:', filters);
-
-    const container = document.getElementById('moviesContainer');
-    container.innerHTML = '<div class="loading">Films filteren...</div>';
+    console.log('Active filters:', filters);
 
     try {
         const movies = await getFilteredMovies(filters);
         displayMovies(movies);
     } catch (error) {
-        console.error('Fout bij filteren:', error);
-        container.innerHTML = '<div class="empty-state">Fout bij filteren films.</div>';
+        console.error('Error applying filters:', error);
     }
 }
 
 /**
- * Reset alle filters naar standaardwaarden
+ * Get current active filters
  */
-function resetFilters() {
-    console.log('Filters reset...');
-
-    document.getElementById('genreFilter').value = '';
-    document.getElementById('yearFilter').value = '';
-    document.getElementById('ratingFilter').value = '0';
-    document.getElementById('ratingValue').textContent = '0';
-    document.getElementById('sortFilter').value = 'popularity';
-
-    // Laad populaire films opnieuw
-    loadMovies();
+export function getActiveFilters() {
+    return {
+        genre: document.getElementById('genreFilter').value,
+        year: document.getElementById('yearFilter').value,
+        rating: document.getElementById('ratingFilter').value,
+        sort: document.getElementById('sortFilter').value,
+        language: document.getElementById('languageFilter').value
+    };
 }
-
-export { applyFilters, resetFilters };
