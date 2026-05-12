@@ -647,6 +647,95 @@ body.dark-mode .footer a:hover {
 }
 
 @media (max-width: 1024px) {
+/* ========================================
+   Featured Movie Section
+   ======================================== */
+
+.featured-section {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(74, 85, 104, 0.05), rgba(113, 128, 150, 0.05));
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.featured-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    text-align: center;
+}
+
+.featured-movie-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.featured-movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.featured-movie-content {
+    display: flex;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+.featured-movie-poster {
+    flex-shrink: 0;
+    width: 150px;
+    height: 225px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #cbd5e0, #a0aec0);
+}
+
+.featured-movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.featured-movie-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.featured-movie-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.featured-movie-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--warning);
+}
+
+.featured-movie-year {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.featured-movie-overview {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text);
+}
+
     .header-container {
         flex-wrap: wrap;
         gap: 0.75rem;
@@ -861,5 +950,193 @@ body.dark-mode .footer a:hover {
     .btn-reset {
         padding: 0.4rem 0.7rem;
         font-size: 0.7rem;
+    }
+}
+
+/* ========================================
+   Pagination Controls
+   ======================================== */
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.pagination-btn {
+    padding: 0.8rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 3px 8px rgba(74, 85, 104, 0.2);
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(74, 85, 104, 0.3);
+}
+
+.pagination-btn:active:not(:disabled) {
+    transform: translateY(0px);
+    box-shadow: 0 2px 6px rgba(74, 85, 104, 0.2);
+}
+
+.pagination-btn:disabled {
+    background: var(--border);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: none;
+}
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 120px;
+    justify-content: center;
+}
+
+#pageInfo {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    padding: 0.6rem 1rem;
+    background: rgba(74, 85, 104, 0.05);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.pagination-jump {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(74, 85, 104, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+}
+
+.page-input {
+    width: 60px;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.page-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: var(--card-bg);
+    box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
+}
+
+.page-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.go-btn {
+    padding: 0.6rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.go-btn:hover {
+    background: var(--accent-color);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(74, 85, 104, 0.2);
+}
+
+.go-btn:active {
+    transform: translateY(0px);
+    box-shadow: 0 1px 4px rgba(74, 85, 104, 0.15);
+}
+
+/* Responsive Pagination */
+@media (max-width: 768px) {
+    .pagination-controls {
+        gap: 1rem;
+        padding: 1.5rem 1rem;
+        flex-direction: column;
+    }
+
+    .pagination-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pagination-info {
+        width: 100%;
+        order: 2;
+    }
+
+    #pageInfo {
+        width: 100%;
+        text-align: center;
+    }
+
+    .pagination-jump {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination-controls {
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .pagination-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .page-input {
+        width: 50px;
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .go-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    #pageInfo {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
     }
 }

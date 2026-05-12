@@ -4,9 +4,10 @@
  */
 
 import { searchMovies } from './api.js';
-import { displayMovies } from './ui.js';
+import { displayMovies, loadMovies } from './ui.js';
 
 let searchTimeout;
+let searchQuery = '';
 
 /**
  * Initialiseert search module
@@ -57,8 +58,10 @@ async function performSearch(query) {
     container.innerHTML = '<div class="loading">Zoeken naar films...</div>';
 
     try {
-        const movies = await searchMovies(query);
-        displayMovies(movies);
+        // Dynamisch import om circular dependency te voorkomen
+        const { setSearchQuery } = await import('./ui.js');
+        searchQuery = query;
+        await setSearchQuery(query);
     } catch (error) {
         console.error('Fout bij zoeken:', error);
         container.innerHTML = '<div class="empty-state">Fout bij zoeken films.</div>';

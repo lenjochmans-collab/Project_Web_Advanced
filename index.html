@@ -65,15 +65,20 @@
                     <option value="release_date">Nieuwste</option>
                     <option value="title">Alfabetisch</option>
                 </select>
+                
 
-                <!-- Language Filter -->
-                <select id="languageFilter" class="filter-dropdown" title="Taal">
-                    <option value="nl" selected>Taal</option>
-                    <option value="en">Engels</option>
-                    <option value="nl" selected>Nederlands</option>
-                    <option value="fr">Frans</option>
-                    <option value="de">Duits</option>
-                    <option value="es">Spaans</option>
+                <!-- Certification Filter -->
+                <select id="certificationFilter" class="filter-dropdown" title="Certificatie (Leeftijdsclassificatie)">
+                    <option value="">Certificatie</option>
+                    <option value="G">G - Iedereen</option>
+                    <option value="PG">PG - Ouders worden geadviseerd</option>
+                    <option value="PG-13">PG-13 - 13+ aanbevolen</option>
+                    <option value="R">R - 17+ aanbevolen</option>
+                    <option value="NC-17">NC-17 - 18+ alleen</option>
+                    <option value="AL">AL - Alle leeftijden (NL)</option>
+                    <option value="6">6+ (NL)</option>
+                    <option value="12">12+ (NL)</option>
+                    <option value="16">16+ (NL)</option>
                 </select>
             </div>
 
@@ -90,12 +95,36 @@
 
     <!-- Main Container -->
     <main class="container">
+        <!-- Single Featured Movie Card -->
+        <section class="featured-section">
+            <h2>Aanbevolen Film</h2>
+            <div id="featuredMovieContainer" class="featured-movie-card">
+                <div class="loading">Film laden...</div>
+            </div>
+        </section>
+
         <!-- Content Area -->
         <section class="content">
             <!-- Movies Grid -->
             <div id="moviesContainer" class="movies-grid">
             <!-- Movies zullen hier geladen worden -->
             <div class="loading">Films laden...</div>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div id="paginationContainer" class="pagination-controls">
+            <button id="prevPageBtn" class="pagination-btn" title="Vorige pagina">← Vorige</button>
+            
+            <div class="pagination-info">
+                <span id="pageInfo">Pagina 1 van 1</span>
+            </div>
+
+            <div class="pagination-jump">
+                <input type="number" id="pageInput" class="page-input" min="1" value="1" placeholder="Pag.">
+                <button id="goPageBtn" class="go-btn" title="Ga naar pagina">Ga</button>
+            </div>
+
+            <button id="nextPageBtn" class="pagination-btn" title="Volgende pagina">Volgende →</button>
         </div>
     </section>
 </main>

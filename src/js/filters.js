@@ -43,17 +43,18 @@ async function applyFilters() {
 
     const filters = {
         withGenres: document.getElementById('genreFilter').value || '',
-        year: document.getElementById('yearFilter').value || '',
-        vote_average_gte: document.getElementById('ratingFilter').value || 0,
-        sort_by: document.getElementById('sortFilter').value || 'popularity.desc',
-        with_original_language: document.getElementById('languageFilter').value || ''
+        primaryReleaseYear: document.getElementById('yearFilter').value || '',
+        voteAverageGte: document.getElementById('ratingFilter').value || 0,
+        sortBy: document.getElementById('sortFilter').value || 'popularity',
+        withOriginalLanguage: document.getElementById('languageFilter').value || ''
     };
 
     console.log('Active filters:', filters);
 
     try {
-        const movies = await getFilteredMovies(filters);
-        displayMovies(movies);
+        // Dynamisch import om circular dependency te voorkomen
+        const { setFilters } = await import('./ui.js');
+        await setFilters(filters);
     } catch (error) {
         console.error('Error applying filters:', error);
     }
