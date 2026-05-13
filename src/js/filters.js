@@ -1,74 +1,91 @@
 /**
  * Filters Module
- * Handles real-time filtering
+ * Verzorgt filter functionaliteit
  */
 
 import { getFilteredMovies, getGenres } from './api.js';
 import { displayMovies, loadMovies } from './ui.js';
 
 /**
- * Initialize filter module
+ * Initialiseert filter module
  */
 export function initFilters() {
-    console.log('Initializing filters...');
+    console.log('Filters initialiseren...');
 
-    // Real-time filter event listeners
-    document.getElementById('genreFilter')?.addEventListener('change', applyFilters);
-    document.getElementById('yearFilter')?.addEventListener('change', applyFilters);
-    document.getElementById('ratingFilter')?.addEventListener('change', applyFilters);
-    document.getElementById('sortFilter')?.addEventListener('change', applyFilters);
-    document.getElementById('languageFilter')?.addEventListener('change', applyFilters);
+    // Event listeners
+    document.getElementById('applyFilters').addEventListener('click', applyFilters);
+    document.getElementById('resetFilters').addEventListener('click', resetFilters);
+
+    // Rating slider
+    const ratingFilter = document.getElementById('ratingFilter');
+    const ratingValue = document.getElementById('ratingValue');
+    ratingFilter.addEventListener('input', (e) => {
+        ratingValue.textContent = e.target.value;
+    });
 
     // Load genres
     loadGenres();
 }
 
 /**
- * Load genres into dropdown
+ * Laadt genres in dropdown
  */
 async function loadGenres() {
     try {
         const genres = await getGenres();
-        console.log('Genres loaded:', genres);
+        // Genres zijn al hardcoded in HTML, maar dit kan gebruikt worden voor dynamisch laden
+        console.log('Genres geladen:', genres);
     } catch (error) {
-        console.error('Error loading genres:', error);
+        console.error('Fout bij laden genres:', error);
     }
 }
 
 /**
- * Apply selected filters (real-time)
+ * Appliceert geselecteerde filters
  */
 async function applyFilters() {
-    console.log('Applying filters...');
+    console.log('Filters toepassen...');
 
     const filters = {
-        withGenres: document.getElementById('genreFilter').value || '',
-        primaryReleaseYear: document.getElementById('yearFilter').value || '',
-        voteAverageGte: document.getElementById('ratingFilter').value || 0,
-        sortBy: document.getElementById('sortFilter').value || 'popularity',
-        withOriginalLanguage: document.getElementById('languageFilter').value || ''
+
     };
 
-    console.log('Active filters:', filters);
+    // Verwijder lege waarden
+    Object.keys(filters).forEach(key => {
+        if (filters[key] === '') {
+            delete filters[key];
+        }
+    });
+
+    console.log('Toegepaste filters:', filters);
+
+    const container = document.getElementById('moviesContainer');
+    container.innerHTML = '<div class="loading">Films filteren...</div>';
 
     try {
         // Dynamisch import om circular dependency te voorkomen
         const { setFilters } = await import('./ui.js');
         await setFilters(filters);
     } catch (error) {
-        console.error('Error applying filters:', error);
+        console.error('Fout bij filteren:', error);
+        container.innerHTML = '<div class="empty-state">Fout bij filteren films.</div>';
     }
 }
 
 /**
- * Get current active filters
+ * Reset alle filters naar standaardwaarden
  */
-export function getActiveFilters() {
-    return {
-        genre: document.getElementById('genreFilter').value,
-        year: document.getElementById('yearFilter').value,
-        rating: document.getElementById('ratingFilter').value,
-        sort: document.getElementById('sortFilter').value,
-        language: document.getElementById('languageFilter').value
-    };
+function resetFilters() {
+    console.log('Filters reset...');
+
+    document.getElementById('genreFilter').value = '';
+    document.getElementById('yearFilter').value = '';
+    document.getElementById('ratingFilter').value = '0';
+    document.getElementById('ratingValue').textContent = '0';
+    document.getElementById('sortFilter').value = 'popularity';
+
+    // Laad populaire films opnieuw
+    loadMovies();
 }
+
+export { applyFilters, resetFilters };

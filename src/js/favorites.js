@@ -1,24 +1,26 @@
 /**
  * Favorites Module
- * Handles favorite movies storage with LocalStorage
+ * Verzorgt opslag van favoriete films met LocalStorage
  */
 
 const STORAGE_KEY = 'movieDatabase_favorites';
 let displayMoviesFunc = null;
 let loadMoviesFunc = null;
-let viewingFavorites = false;
 
 /**
- * Initialize favorites module
+ * Initialiseert favorites module
  */
 export function initFavorites() {
-    console.log('Initializing favorites...');
+    console.log('Favorites initialiseren...');
 
-    // Event listener for star button
-    const favBtn = document.getElementById('favoritesBtn');
+    // Event listeners (only if elements exist)
+    const favBtn = document.getElementById('favoritesDropdown');
     if (favBtn) {
-        favBtn.addEventListener('click', toggleFavoritesView);
+        favBtn.addEventListener('click', viewFavorites);
     }
+
+    // Load en display favorieten
+    displayFavoritesList();
 }
 
 /**
@@ -30,47 +32,8 @@ export function setUIFunctions(displayMovies, loadMovies) {
 }
 
 /**
- * Toggle favorites view
- */
-function toggleFavoritesView() {
-    const favBtn = document.getElementById('favoritesBtn');
-    
-    if (viewingFavorites) {
-        // Return to normal view
-        viewingFavorites = false;
-        favBtn?.classList.remove('active');
-        if (loadMoviesFunc) {
-            loadMoviesFunc();
-        }
-    } else {
-        // Show favorites
-        viewingFavorites = true;
-        favBtn?.classList.add('active');
-        displayFavorites();
-    }
-}
-
-/**
- * Display favorites
- */
-function displayFavorites() {
-    const favorites = getFavorites();
-    
-    if (displayMoviesFunc) {
-        if (favorites.length === 0) {
-            const container = document.getElementById('moviesContainer');
-            if (container) {
-                container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-secondary);">No favorite movies yet. Add some by clicking the heart icon on movie cards.</div>';
-            }
-        } else {
-            displayMoviesFunc(favorites);
-        }
-    }
-}
-
-/**
- * Add movie to favorites
- * @param {Object} movie - Movie object
+ * Voegt film toe aan favorieten
+ * @param {Object} movie - Film object
  */
 export function addFavorite(movie) {
     const favorites = getFavorites();
@@ -85,30 +48,27 @@ export function addFavorite(movie) {
         });
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
-        console.log('Movie added to favorites:', movie.title);
+        console.log('Film toegevoegd aan favorieten:', movie.title);
+        displayFavoritesList();
     }
 }
 
 /**
- * Remove movie from favorites
- * @param {number} movieId - Movie ID
+ * Verwijdert film uit favorieten
+ * @param {number} movieId - ID van de film
  */
 export function removeFavorite(movieId) {
     const favorites = getFavorites();
     const filtered = favorites.filter(fav => fav.id !== movieId);
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
-    console.log('Movie removed from favorites');
-    
-    // If currently viewing favorites, refresh display
-    if (viewingFavorites) {
-        displayFavorites();
-    }
+    console.log('Film verwijderd uit favorieten');
+    displayFavoritesList();
 }
 
 /**
- * Get all favorites
- * @returns {Array} Array of favorite movies
+ * Haalt alle favorieten op
+ * @returns {Array} Array van favoriete films
  */
 export function getFavorites() {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -116,20 +76,27 @@ export function getFavorites() {
 }
 
 /**
- * Check if movie is favorite
- * @param {number} movieId - Movie ID
- * @returns {boolean} True if favorite, false otherwise
+ * Controleert of film favoriet is
+ * @param {number} movieId - ID van de film
+ * @returns {boolean} True als favoriet, false anders
  */
 export function isFavorite(movieId) {
     return getFavorites().some(fav => fav.id === movieId);
 }
 
 /**
- * Check if currently viewing favorites
- * @returns {boolean} True if viewing favorites
+ * Toont favorieten lijst in sidebar
  */
-export function isViewingFavorites() {
-    return viewingFavorites;
+function displayFavoritesList() {
+    const favoritesList = document.getElementById('favoritesList');
+    const favorites = getFavorites();
+
+    if (!favoritesList) return;
+
+    if (favorites.length === 0) {
+        favoritesList.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem;">Geen favorieten nog.</p>';
+        return;
+    }
 
     favoritesList.innerHTML = favorites.map(movie => `
         <div class="favorite-item">
