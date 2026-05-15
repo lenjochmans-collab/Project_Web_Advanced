@@ -440,5 +440,3 @@ export async function setCertification(certification) {
         await loadMovies();
     }
 }
-
-export { loadMovies };

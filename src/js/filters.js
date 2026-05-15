@@ -46,13 +46,24 @@ async function loadGenres() {
 async function applyFilters() {
     console.log('Filters toepassen...');
 
-    const filters = {
+    const genreFilter = document.getElementById('genreFilter').value;
+    const yearFilter = document.getElementById('yearFilter').value;
+    const ratingFilter = parseFloat(document.getElementById('ratingFilter').value) || 0;
+    const sortFilter = document.getElementById('sortFilter').value;
+    const languageFilter = document.getElementById('languageFilter').value;
 
+    const filters = {
+        withGenres: genreFilter || undefined,
+        primaryReleaseYear: yearFilter || undefined,
+        voteAverageGte: ratingFilter > 0 ? ratingFilter : undefined,
+        sortBy: sortFilter || 'popularity',
+        withOriginalLanguage: languageFilter || undefined,
+        page: 1
     };
 
-    // Verwijder lege waarden
+    // Verwijder undefined waarden
     Object.keys(filters).forEach(key => {
-        if (filters[key] === '') {
+        if (filters[key] === undefined || filters[key] === '') {
             delete filters[key];
         }
     });

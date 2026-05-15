@@ -6,8 +6,25 @@
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-// API key uit environment variabele
-const API_KEY = import.meta.env.VITE_API_KEY || '';
+// API key - Add your TMDB API key here from https://www.themoviedb.org/settings/api
+// You can get a free API key by signing up at https://www.themoviedb.org/
+const API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMGFiOWZlNGE1ZjRiMjNjNTcyM2I1ZjJmYzUwMDk5NSIsIm5iZiI6MTc3ODA4MDI3MS43OTMsInN1YiI6IjY5ZmI1YTBmOTJlYmQxM2RiZWI5YWI4OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Fhju573-nxGaHYmJd3ktb5AQ8j0A0GNGxowGkwmEJUw';
+
+/**
+ * Helper function om API calls met Bearer token te maken
+ * @param {string} url - De API URL (zonder api_key parameter)
+ * @param {Object} options - Fetch options (method, body, etc)
+ * @returns {Promise<Response>} Response van de API
+ */
+async function apiFetch(url, options = {}) {
+    const headers = {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+        ...options.headers
+    };
+    
+    return fetch(url, { ...options, headers });
+}
 
 /**
  * Haalt populaire films op
@@ -16,8 +33,8 @@ const API_KEY = import.meta.env.VITE_API_KEY || '';
  */
 export async function getPopularMovies(page = 1) {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}&language=nl-NL`
+        const response = await apiFetch(
+            `${API_BASE_URL}/movie/popular?page=${page}&language=nl-NL`
         );
         const data = await response.json();
         return data.results || [];
@@ -34,8 +51,8 @@ export async function getPopularMovies(page = 1) {
  */
 export async function getPopularMoviesWithPagination(page = 1) {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}&language=nl-NL`
+        const response = await apiFetch(
+            `${API_BASE_URL}/movie/popular?page=${page}&language=nl-NL`
         );
         const data = await response.json();
         return {
@@ -57,8 +74,8 @@ export async function getPopularMoviesWithPagination(page = 1) {
  */
 export async function getTopRatedMovies(page = 1) {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/movie/top_rated?api_key=${API_KEY}&page=${page}&language=nl-NL`
+        const response = await apiFetch(
+            `${API_BASE_URL}/movie/top_rated?page=${page}&language=nl-NL`
         );
         const data = await response.json();
         return data.results || [];
@@ -75,8 +92,8 @@ export async function getTopRatedMovies(page = 1) {
  */
 export async function getTopRatedMoviesWithPagination(page = 1) {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/movie/top_rated?api_key=${API_KEY}&page=${page}&language=nl-NL`
+        const response = await apiFetch(
+            `${API_BASE_URL}/movie/top_rated?page=${page}&language=nl-NL`
         );
         const data = await response.json();
         return {
@@ -101,8 +118,8 @@ export async function searchMovies(query, page = 1) {
     if (!query.trim()) return [];
 
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=${page}&language=nl-NL`
+        const response = await apiFetch(
+            `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}&language=nl-NL`
         );
         const data = await response.json();
         return data.results || [];
@@ -122,8 +139,8 @@ export async function searchMoviesWithPagination(query, page = 1) {
     if (!query.trim()) return { results: [], totalPages: 1, currentPage: 1, totalResults: 0 };
 
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=${page}&language=nl-NL`
+        const response = await apiFetch(
+            `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}&language=nl-NL`
         );
         const data = await response.json();
         return {
@@ -144,8 +161,8 @@ export async function searchMoviesWithPagination(query, page = 1) {
  */
 export async function getGenres() {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=nl-NL`
+        const response = await apiFetch(
+            `${API_BASE_URL}/genre/movie/list?language=nl-NL`
         );
         const data = await response.json();
         return data.genres || [];
@@ -162,8 +179,8 @@ export async function getGenres() {
  */
 export async function getMovieDetails(movieId) {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=nl-NL`
+        const response = await apiFetch(
+            `${API_BASE_URL}/movie/${movieId}?language=nl-NL`
         );
         return await response.json();
     } catch (error) {
@@ -180,7 +197,6 @@ export async function getMovieDetails(movieId) {
 export async function getFilteredMovies(filters = {}) {
     try {
         const params = new URLSearchParams({
-            api_key: API_KEY,
             language: 'nl-NL',
             sort_by: `${filters.sortBy || 'popularity'}.desc`,
             page: filters.page || 1
@@ -202,7 +218,7 @@ export async function getFilteredMovies(filters = {}) {
             params.append('with_original_language', filters.withOriginalLanguage);
         }
 
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_BASE_URL}/discover/movie?${params.toString()}`
         );
         const data = await response.json();
@@ -221,7 +237,6 @@ export async function getFilteredMovies(filters = {}) {
 export async function getFilteredMoviesWithPagination(filters = {}) {
     try {
         const params = new URLSearchParams({
-            api_key: API_KEY,
             language: 'nl-NL',
             sort_by: `${filters.sortBy || 'popularity'}.desc`,
             page: filters.page || 1
@@ -243,7 +258,7 @@ export async function getFilteredMoviesWithPagination(filters = {}) {
             params.append('with_original_language', filters.withOriginalLanguage);
         }
 
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_BASE_URL}/discover/movie?${params.toString()}`
         );
         const data = await response.json();
@@ -265,8 +280,8 @@ export async function getFilteredMoviesWithPagination(filters = {}) {
  */
 export async function getCertifications() {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/certification/movie/list?api_key=${API_KEY}`
+        const response = await apiFetch(
+            `${API_BASE_URL}/certification/movie/list`
         );
         const data = await response.json();
         return data.certifications || {};
@@ -284,7 +299,6 @@ export async function getCertifications() {
 export async function getMoviesByCertification(options = {}) {
     try {
         const params = new URLSearchParams({
-            api_key: API_KEY,
             language: 'nl-NL',
             sort_by: `${options.sortBy || 'popularity'}.desc`,
             page: options.page || 1
@@ -298,7 +312,7 @@ export async function getMoviesByCertification(options = {}) {
             params.append('certification', options.certification);
         }
 
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_BASE_URL}/discover/movie?${params.toString()}`
         );
         const data = await response.json();
@@ -317,7 +331,6 @@ export async function getMoviesByCertification(options = {}) {
 export async function getMoviesByCertificationWithPagination(options = {}) {
     try {
         const params = new URLSearchParams({
-            api_key: API_KEY,
             language: 'nl-NL',
             sort_by: `${options.sortBy || 'popularity'}.desc`,
             page: options.page || 1
@@ -331,7 +344,7 @@ export async function getMoviesByCertificationWithPagination(options = {}) {
             params.append('certification', options.certification);
         }
 
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_BASE_URL}/discover/movie?${params.toString()}`
         );
         const data = await response.json();
