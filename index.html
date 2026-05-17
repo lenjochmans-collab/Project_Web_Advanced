@@ -38,6 +38,16 @@
     <!-- Filter Bar -->
     <div class="filter-bar">
         <div class="filter-bar-content">
+            <!-- Type Filter -->
+            <div class="filter-item">
+                <label>Type:</label>
+                <select id="typeFilter" class="filter-select">
+                    <option value="">Alles</option>
+                    <option value="movie">Film</option>
+                    <option value="tv">Serie</option>
+                </select>
+            </div>
+
             <!-- Genre Filter -->
             <div class="filter-item">
                 <label>Genre:</label>
@@ -157,6 +167,48 @@
 <footer class="footer">
     <p>&copy; 2025 MovieDB. Powered by <a href="https://www.themoviedb.org/" target="_blank">TMDB API</a></p>
 </footer>
+
+<!-- Movie Details Modal -->
+<div id="detailsModal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="movie-details-container">
+            <div class="details-header">
+                <img id="detailsPoster" class="details-poster" src="" alt="">
+                <div class="details-info">
+                    <h1 id="detailsTitle" class="details-title"></h1>
+                    <div class="details-meta">
+                        <span id="detailsYear" class="details-year"></span>
+                        <span id="detailsGenres" class="details-genres"></span>
+                        <span id="detailsRating" class="details-rating"></span>
+                    </div>
+                    <p id="detailsOverview" class="details-overview"></p>
+                    <div class="details-buttons">
+                        <button id="detailsFavoriteBtn" class="btn-favorite-detail">❤️ Toevoegen aan favorieten</button>
+                    </div>
+                </div>
+            </div>
+            <div class="details-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Uitgavejaar:</span>
+                    <span id="detailsReleaseDate" class="stat-value"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Beoordeling:</span>
+                    <span id="detailsVoteAverage" class="stat-value"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Populairiteit:</span>
+                    <span id="detailsPopularity" class="stat-value"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Aantal stemmen:</span>
+                    <span id="detailsVoteCount" class="stat-value"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Scripts -->
 <script type="module" src="src/js/main.js"></script>

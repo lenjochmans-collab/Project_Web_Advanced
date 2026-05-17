@@ -41,6 +41,9 @@ export async function initUI() {
 
     // Event listeners voor paginatie
     setupPaginationListeners();
+
+    // Event listeners voor modal
+    setupModalListeners();
 }
 
 /**
@@ -70,6 +73,35 @@ function setupPaginationListeners() {
             }
         });
     }
+}
+
+/**
+ * Setup modal event listeners
+ */
+function setupModalListeners() {
+    const modal = document.getElementById('detailsModal');
+    const closeBtn = document.querySelector('.modal-close');
+
+    // Close knop
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+    }
+
+    // Modal sluiten bij buiten klikken
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+        }
+    });
+
+    // Sluit modal bij Escape toets
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            modal.classList.remove('show');
+        }
+    });
 }
 
 /**
@@ -284,15 +316,71 @@ function handleFavoriteClick(e) {
 /**
  * Handelt details klik af
  */
-function handleDetailsClick(e) {
+async function handleDetailsClick(e) {
     e.stopPropagation();
     const movieId = parseInt(this.dataset.id);
     const movie = currentMovies.find(m => m.id === movieId);
 
     if (movie) {
-        console.log('Details voor:', movie.title);
-        // TODO: Open details modal/pagina
-        alert(`Details: ${movie.title}\n\nRating: ${movie.vote_average}\nJaar: ${new Date(movie.release_date).getFullYear()}`);
+        await showMovieDetails(movieId);
+    }
+}
+
+/**
+ * Toont gedetailleerde filminfo in modal
+ */
+async function showMovieDetails(movieId) {
+    try {
+        const { getMovieDetails, getPosterUrl } = await import('./api.js');
+        const { isFavorite, addFavorite, removeFavorite } = await import('./favorites.js');
+        
+        const details = await getMovieDetails(movieId);
+        
+        if (!details) {
+            alert('Fout bij laden filmdetails');
+            return;
+        }
+
+        // Vul modal met gegevens
+        document.getElementById('detailsTitle').textContent = details.title || details.name || '';
+        document.getElementById('detailsPoster').src = getPosterUrl(details.poster_path) || '';
+        document.getElementById('detailsYear').textContent = details.release_date 
+            ? new Date(details.release_date).getFullYear() 
+            : (details.first_air_date ? new Date(details.first_air_date).getFullYear() : 'N/A');
+        document.getElementById('detailsGenres').textContent = details.genres 
+            ? details.genres.map(g => g.name).join(', ')
+            : 'N/A';
+        document.getElementById('detailsRating').textContent = `⭐ ${details.vote_average ? details.vote_average.toFixed(1) : 'N/A'}/10`;
+        document.getElementById('detailsOverview').textContent = details.overview || 'Geen overzicht beschikbaar';
+        document.getElementById('detailsReleaseDate').textContent = details.release_date || details.first_air_date || 'N/A';
+        document.getElementById('detailsVoteAverage').textContent = details.vote_average ? details.vote_average.toFixed(1) : 'N/A';
+        document.getElementById('detailsPopularity').textContent = details.popularity ? details.popularity.toFixed(0) : 'N/A';
+        document.getElementById('detailsVoteCount').textContent = details.vote_count || 'N/A';
+
+        // Favoriet knop setup
+        const favoriteBtn = document.getElementById('detailsFavoriteBtn');
+        const isFav = isFavorite(movieId);
+        favoriteBtn.textContent = isFav ? '❤️ In favorieten' : '🤍 Toevoegen aan favorieten';
+        favoriteBtn.classList.toggle('active', isFav);
+        
+        favoriteBtn.onclick = () => {
+            if (isFavorite(movieId)) {
+                removeFavorite(movieId);
+                favoriteBtn.textContent = '🤍 Toevoegen aan favorieten';
+                favoriteBtn.classList.remove('active');
+            } else {
+                addFavorite(details);
+                favoriteBtn.textContent = '❤️ In favorieten';
+                favoriteBtn.classList.add('active');
+            }
+        };
+
+        // Toon modal
+        const modal = document.getElementById('detailsModal');
+        modal.classList.add('show');
+    } catch (error) {
+        console.error('Fout bij laden details:', error);
+        alert('Fout bij laden filmdetails');
     }
 }
 

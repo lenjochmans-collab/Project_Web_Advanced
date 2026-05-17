@@ -46,6 +46,7 @@ async function loadGenres() {
 async function applyFilters() {
     console.log('Filters toepassen...');
 
+    const typeFilter = document.getElementById('typeFilter').value;
     const genreFilter = document.getElementById('genreFilter').value;
     const yearFilter = document.getElementById('yearFilter').value;
     const ratingFilter = parseFloat(document.getElementById('ratingFilter').value) || 0;
@@ -53,6 +54,7 @@ async function applyFilters() {
     const languageFilter = document.getElementById('languageFilter').value;
 
     const filters = {
+        type: typeFilter || undefined,
         withGenres: genreFilter || undefined,
         primaryReleaseYear: yearFilter || undefined,
         voteAverageGte: ratingFilter > 0 ? ratingFilter : undefined,
@@ -89,11 +91,13 @@ async function applyFilters() {
 function resetFilters() {
     console.log('Filters reset...');
 
+    document.getElementById('typeFilter').value = '';
     document.getElementById('genreFilter').value = '';
     document.getElementById('yearFilter').value = '';
     document.getElementById('ratingFilter').value = '0';
     document.getElementById('ratingValue').textContent = '0';
     document.getElementById('sortFilter').value = 'popularity';
+    document.getElementById('languageFilter').value = '';
 
     // Laad populaire films opnieuw
     loadMovies();
