@@ -3,6 +3,10 @@
  * Imports all modules en initialiseert de applicatie
  */
 
+// CSS import
+import '../css/style.css';
+
+// Module imports
 import { initTheme } from './theme.js';
 import { initUI, displayMovies, loadMovies } from './ui.js';
 import { initFilters } from './filters.js';

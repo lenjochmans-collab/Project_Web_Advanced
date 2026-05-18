@@ -45,21 +45,28 @@ export async function getPopularMovies(page = 1) {
 }
 
 /**
- * Haalt populaire films met paginatie info op
+ * Haalt populaire films met paginatie info op (2x zoveel movies door 2 pages te combineren)
  * @param {number} page - Paginanummer
  * @returns {Promise<Object>} Object met results, total_pages en current_page
  */
 export async function getPopularMoviesWithPagination(page = 1) {
     try {
-        const response = await apiFetch(
+        const response1 = await apiFetch(
             `${API_BASE_URL}/movie/popular?page=${page}&language=nl-NL`
         );
-        const data = await response.json();
+        const data1 = await response1.json();
+        
+        // Haal ook de volgende pagina op voor 2x zoveel resultaten
+        const response2 = await apiFetch(
+            `${API_BASE_URL}/movie/popular?page=${page + 1}&language=nl-NL`
+        );
+        const data2 = await response2.json();
+        
         return {
-            results: data.results || [],
-            totalPages: data.total_pages || 1,
+            results: [...(data1.results || []), ...(data2.results || [])],
+            totalPages: Math.ceil((data1.total_pages || 1) / 2),
             currentPage: page,
-            totalResults: data.total_results || 0
+            totalResults: data1.total_results || 0
         };
     } catch (error) {
         console.error('Fout bij ophalen populaire films:', error);
@@ -86,21 +93,28 @@ export async function getTopRatedMovies(page = 1) {
 }
 
 /**
- * Haalt best beoordeelde films met paginatie info op
+ * Haalt best beoordeelde films met paginatie info op (2x zoveel movies door 2 pages te combineren)
  * @param {number} page - Paginanummer
  * @returns {Promise<Object>} Object met results, total_pages en current_page
  */
 export async function getTopRatedMoviesWithPagination(page = 1) {
     try {
-        const response = await apiFetch(
+        const response1 = await apiFetch(
             `${API_BASE_URL}/movie/top_rated?page=${page}&language=nl-NL`
         );
-        const data = await response.json();
+        const data1 = await response1.json();
+        
+        // Haal ook de volgende pagina op voor 2x zoveel resultaten
+        const response2 = await apiFetch(
+            `${API_BASE_URL}/movie/top_rated?page=${page + 1}&language=nl-NL`
+        );
+        const data2 = await response2.json();
+        
         return {
-            results: data.results || [],
-            totalPages: data.total_pages || 1,
+            results: [...(data1.results || []), ...(data2.results || [])],
+            totalPages: Math.ceil((data1.total_pages || 1) / 2),
             currentPage: page,
-            totalResults: data.total_results || 0
+            totalResults: data1.total_results || 0
         };
     } catch (error) {
         console.error('Fout bij ophalen best beoordeelde films:', error);
@@ -130,7 +144,7 @@ export async function searchMovies(query, page = 1) {
 }
 
 /**
- * Zoekt films met paginatie info
+ * Zoekt films met paginatie info (2x zoveel movies door 2 pages te combineren)
  * @param {string} query - Zoekterm
  * @param {number} page - Paginanummer
  * @returns {Promise<Object>} Object met results, total_pages en current_page
@@ -139,15 +153,22 @@ export async function searchMoviesWithPagination(query, page = 1) {
     if (!query.trim()) return { results: [], totalPages: 1, currentPage: 1, totalResults: 0 };
 
     try {
-        const response = await apiFetch(
+        const response1 = await apiFetch(
             `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}&language=nl-NL`
         );
-        const data = await response.json();
+        const data1 = await response1.json();
+        
+        // Haal ook de volgende pagina op voor 2x zoveel resultaten
+        const response2 = await apiFetch(
+            `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page + 1}&language=nl-NL`
+        );
+        const data2 = await response2.json();
+        
         return {
-            results: data.results || [],
-            totalPages: data.total_pages || 1,
+            results: [...(data1.results || []), ...(data2.results || [])],
+            totalPages: Math.ceil((data1.total_pages || 1) / 2),
             currentPage: page,
-            totalResults: data.total_results || 0
+            totalResults: data1.total_results || 0
         };
     } catch (error) {
         console.error('Fout bij zoeken films:', error);
@@ -230,43 +251,39 @@ export async function getFilteredMovies(filters = {}) {
 }
 
 /**
- * Haalt films op met filters en paginatie info
+ * Haalt films op met filters en paginatie info (2x zoveel movies door 2 pages te combineren)
  * @param {Object} filters - Object met filterinstellingen
  * @returns {Promise<Object>} Object met results, total_pages en current_page
  */
 export async function getFilteredMoviesWithPagination(filters = {}) {
     try {
-        const params = new URLSearchParams({
-            language: 'nl-NL',
-            sort_by: `${filters.sortBy || 'popularity'}.desc`,
-            page: filters.page || 1
-        });
-
-        if (filters.withGenres) {
-            params.append('with_genres', filters.withGenres);
-        }
-
-        if (filters.primaryReleaseYear) {
-            params.append('primary_release_year', filters.primaryReleaseYear);
-        }
-
-        if (filters.voteAverageGte) {
-            params.append('vote_average.gte', filters.voteAverageGte);
-        }
-
-        if (filters.withOriginalLanguage) {
-            params.append('with_original_language', filters.withOriginalLanguage);
-        }
-
-        const response = await apiFetch(
-            `${API_BASE_URL}/discover/movie?${params.toString()}`
-        );
-        const data = await response.json();
+        const page = filters.page || 1;
+        
+        const buildParams = (pageNum) => {
+            const params = new URLSearchParams({
+                language: 'nl-NL',
+                sort_by: `${filters.sortBy || 'popularity'}.desc`,
+                page: pageNum
+            });
+            if (filters.withGenres) params.append('with_genres', filters.withGenres);
+            if (filters.primaryReleaseYear) params.append('primary_release_year', filters.primaryReleaseYear);
+            if (filters.voteAverageGte) params.append('vote_average.gte', filters.voteAverageGte);
+            if (filters.withOriginalLanguage) params.append('with_original_language', filters.withOriginalLanguage);
+            return params.toString();
+        };
+        
+        const response1 = await apiFetch(`${API_BASE_URL}/discover/movie?${buildParams(page)}`);
+        const data1 = await response1.json();
+        
+        // Haal ook de volgende pagina op voor 2x zoveel resultaten
+        const response2 = await apiFetch(`${API_BASE_URL}/discover/movie?${buildParams(page + 1)}`);
+        const data2 = await response2.json();
+        
         return {
-            results: data.results || [],
-            totalPages: data.total_pages || 1,
-            currentPage: filters.page || 1,
-            totalResults: data.total_results || 0
+            results: [...(data1.results || []), ...(data2.results || [])],
+            totalPages: Math.ceil((data1.total_pages || 1) / 2),
+            currentPage: page,
+            totalResults: data1.total_results || 0
         };
     } catch (error) {
         console.error('Fout bij ophalen gefilterde films:', error);
@@ -324,35 +341,37 @@ export async function getMoviesByCertification(options = {}) {
 }
 
 /**
- * Haalt films op gefilterd op certificatie met paginatie info
+ * Haalt films op gefilterd op certificatie met paginatie info (2x zoveel movies door 2 pages te combineren)
  * @param {Object} options - Filter opties (certificationCountry, certification, page, sortBy)
  * @returns {Promise<Object>} Object met results, totalPages, currentPage
  */
 export async function getMoviesByCertificationWithPagination(options = {}) {
     try {
-        const params = new URLSearchParams({
-            language: 'nl-NL',
-            sort_by: `${options.sortBy || 'popularity'}.desc`,
-            page: options.page || 1
-        });
-
-        if (options.certificationCountry) {
-            params.append('certification_country', options.certificationCountry);
-        }
-
-        if (options.certification) {
-            params.append('certification', options.certification);
-        }
-
-        const response = await apiFetch(
-            `${API_BASE_URL}/discover/movie?${params.toString()}`
-        );
-        const data = await response.json();
+        const page = options.page || 1;
+        
+        const buildParams = (pageNum) => {
+            const params = new URLSearchParams({
+                language: 'nl-NL',
+                sort_by: `${options.sortBy || 'popularity'}.desc`,
+                page: pageNum
+            });
+            if (options.certificationCountry) params.append('certification_country', options.certificationCountry);
+            if (options.certification) params.append('certification', options.certification);
+            return params.toString();
+        };
+        
+        const response1 = await apiFetch(`${API_BASE_URL}/discover/movie?${buildParams(page)}`);
+        const data1 = await response1.json();
+        
+        // Haal ook de volgende pagina op voor 2x zoveel resultaten
+        const response2 = await apiFetch(`${API_BASE_URL}/discover/movie?${buildParams(page + 1)}`);
+        const data2 = await response2.json();
+        
         return {
-            results: data.results || [],
-            totalPages: data.total_pages || 1,
-            currentPage: options.page || 1,
-            totalResults: data.total_results || 0
+            results: [...(data1.results || []), ...(data2.results || [])],
+            totalPages: Math.ceil((data1.total_pages || 1) / 2),
+            currentPage: page,
+            totalResults: data1.total_results || 0
         };
     } catch (error) {
         console.error('Fout bij ophalen films per certificatie:', error);

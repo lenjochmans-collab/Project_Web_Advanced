@@ -1,16 +1,37 @@
 # MovieDB - Interactive Single Page Application
 
-Een interactieve webapplicatie voor het verkennen van films en series van The Movie Database (TMDB) API. Gebruikers kunnen films doorzoeken, filteren, sorteren en hun favorieten opslaan. Dit project is gebouwd met vanilla JavaScript, HTML5 en CSS3 zonder enige build tools of frameworks.
+Een interactieve webapplicatie voor het verkennen van films en series van The Movie Database (TMDB) API. Gebruikers kunnen films doorzoeken, filteren, sorteren en hun favorieten opslaan. Dit project is gebouwd met vanilla JavaScript, HTML5 en CSS3 met Vite als build tool.
 
 ## 🚀 Snelle Start
 
-De applicatie kan direct geopend worden in een moderne browser:
+### Met Vite (Aanbevolen voor Development)
 
-1. Download of clone het project
-2. Open `index.html` in je favoriet browser (Chrome, Firefox, Safari, Edge)
-3. De applicatie laadt onmiddellijk - geen installatie nodig!
+1. **Node.js installeren** - Download van https://nodejs.org/ (LTS versie)
 
-De applicatie werkt direct uit het vak. Alle bestanden zijn statisch en vereisen geen server setup of npm dependencies.
+2. **Dependencies installeren:**
+```bash
+npm install
+```
+
+3. **Development server starten:**
+```bash
+npm run dev
+```
+De applicatie opent automatisch op `http://localhost:5173`
+
+4. **Production build maken:**
+```bash
+npm run build
+```
+Dit genereert een `dist/` folder klaar voor deployment
+
+### Zonder Build Tool (Directe Browser)
+
+Je kunt de applicatie ook rechtstreeks openen (zonder Vite):
+1. Open `index.html` in je favoriet browser
+2. De applicatie laadt onmiddellijk
+
+**Opmerking:** De development server met Vite biedt hot module reloading en betere developer experience.
 
 ## 📋 Projectbeschrijving
 
@@ -35,6 +56,7 @@ De applicatie bevat alle vereiste functionaliteiten voor een advanced web projec
 - **HTML5** - Semantic markup en structuur
 - **CSS3** - Flexbox, CSS Grid, CSS variables voor thema's
 - **JavaScript (Vanilla ES6+)** - Geen frameworks, pure JavaScript
+- **Vite** - Modern build tool voor development en production optimization
 - **TMDB API** - The Movie Database REST API voor filmdata
 - **LocalStorage** - Browser API voor persistente opslag
 
@@ -58,7 +80,7 @@ Alle API calls gebruiken Bearer token authenticatie voor veilige communicatie me
 
 ## 📁 Projectstructuur
 
-De applicatie volgt een logische folderstructuur:
+De applicatie volgt een logische folderstructuur met Vite build tool:
 
 ```
 Project_Web_Advanced/
@@ -67,46 +89,69 @@ Project_Web_Advanced/
 │   ├── css/
 │   │   └── style.css    # Alle styling (flexbox, grid, dark mode)
 │   └── js/
-│       ├── main.js      # Entry point en initialisatie
+│       ├── main.js      # Entry point en initialisatie (CSS import)
 │       ├── api.js       # API calls met fetch en async/await
 │       ├── ui.js        # DOM manipulatie en weergave
 │       ├── filters.js   # Filterfunctionaliteit
 │       ├── search.js    # Zoekfunctie
 │       ├── favorites.js # Favorieten management met LocalStorage
 │       └── theme.js     # Dark mode toggle
+├── dist/                # Production build (gegenereerd met npm run build)
+├── node_modules/        # Dependencies (gegenereerd met npm install)
 ├── index.html           # HTML structuur en semantische markup
+├── package.json         # Project dependencies en scripts
+├── vite.config.js       # Vite configuratie
+├── .gitignore           # Git ignore rules
 └── README.md            # Documentatie (dit bestand)
 ```
 
 ## 🛠️ Installatiehandleiding
 
-### Voor lokaal gebruik:
+### Lokale Development Setup:
 
-**Stap 1: Project downloaden**
+**Stap 1: Node.js installeren**
+Download en installeer Node.js van https://nodejs.org/ (kies LTS versie). Dit bevat npm die nodig is voor Vite.
+
+**Stap 2: Project downloaden**
 Download het project als ZIP bestand of clone het via Git:
 ```bash
 git clone <repository-url>
 cd Project_Web_Advanced
 ```
 
-**Stap 2: In browser openen**
-Open het bestand `index.html` rechtstreeks in een moderne browser. Je kunt dit doen door:
-- De file browser te openen en op `index.html` te dubbelklikken, OF
-- De `index.html` file te slepen naar je browser venster, OF
-- Rechtsklik op `index.html` → "Open with" → selecteer je browser
+**Stap 3: Vite en dependencies installeren**
+Voer dit commando uit in de project folder:
+```bash
+npm install
+```
+Dit installeert Vite en andere dependencies in `node_modules/` folder.
 
-**Stap 3: Genieten!**
-De applicatie laadt onmiddellijk. Alle functies zijn beschikbaar zonder enige setup.
+**Stap 4: Development server starten**
+```bash
+npm run dev
+```
+Dit start de Vite development server. De applicatie opent automatisch op `http://localhost:5173`.
+
+**Stap 5: Hot Module Reloading**
+Wijzigingen in code worden automatisch gereloaded in de browser. Geweldig voor development!
+
+### Production Build maken:
+
+```bash
+npm run build
+```
+
+Dit genereert een geoptimaliseerde `dist/` folder klaar voor deployment. Deze folder bevat minified code en assets.
 
 ### Voor online deployment:
 
-Upload alle bestanden naar je webserver of gebruik gratis hosting zoals:
-- GitHub Pages (gratis hosting direct van je repository)
-- Netlify (versleep eenvoudig je project folder)
-- Vercel (ideaal voor static sites)
-- Any web hosting met HTML/CSS/JS support
+Upload de inhoud van de `dist/` folder naar je webserver of gebruik gratis hosting:
+- **GitHub Pages** - Gratis hosting direct van je repository
+- **Netlify** - Versleep eenvoudig je project folder
+- **Vercel** - Ideaal voor static sites en web apps
+- **Any web hosting** - Met HTML/CSS/JS support
 
-De applicatie werkt op elk webserver zonder backend requirements.
+Je kunt ook rechtstreeks `index.html` openen in een browser (zonder development server) voor snelle tests.
 
 ## 📚 Implementatie van Technische Vereisten
 
@@ -318,6 +363,10 @@ Hier is een complete referentielijst met alle vereiste termen en hun exacte loca
 | **HTML Semantiek** | `index.html` | 1-50 | `<header>`, `<nav>`, `<main>`, `<section>` tags |
 | **Input Validatie** | `src/js/filters.js` | 48-65 | Check op lege strings en ongeldige values |
 | **Paginatie** | `src/js/ui.js` | 295-320 | Next/prev buttons voor page navigation |
+| **ES6 Module Imports** | `src/js/main.js` | 1-12 | `import/export` syntax voor module loading |
+| **CSS Import in JS** | `src/js/main.js` | 6 | `import '../css/style.css'` voor Vite |
+| **Vite Build Tool** | `vite.config.js` | 1-15 | Development server en production build config |
+| **npm Scripts** | `package.json` | 6-9 | `dev`, `build`, `preview` commands |
 
 ### Snelle Referentie
 
@@ -327,8 +376,12 @@ Hier is een complete referentielijst met alle vereiste termen en hun exacte loca
 - Movies grid container: lijnen 160-170
 - Details modal: lijnen 165-203
 
+**Vite Configuratie:**
+- [package.json](package.json) - Dependencies en npm scripts
+- [vite.config.js](vite.config.js) - Vite server en build config
+
 **JavaScript Modules:**
-- [src/js/main.js](src/js/main.js) - Entry point (lijnen 1-30)
+- [src/js/main.js](src/js/main.js) - Entry point met CSS import (lijnen 1-35)
 - [src/js/api.js](src/js/api.js) - API calls (lijnen 5-145)
 - [src/js/ui.js](src/js/ui.js) - DOM manipulatie (lijnen 22-450)
 - [src/js/filters.js](src/js/filters.js) - Filter logica (lijnen 12-90)
@@ -346,7 +399,7 @@ Hier is een complete referentielijst met alle vereiste termen en hun exacte loca
 
 ## 🏫 Project Informatie
 
-Dit project is gemaakt voor het vak **Advanced Web** aan de **Erasmushogeschool Brussel (EHB)**. Het demonstreert master-level JavaScript skills door een volledig functionele single-page applicatie te bouwen met alleen vanilla JavaScript, HTML en CSS.
+Dit project is gemaakt voor het vak **Advanced Web** aan de **Erasmushogeschool Brussel (EHB)**. Het demonstreert master-level JavaScript skills door een volledig functionele single-page applicatie te bouwen met vanilla JavaScript, HTML, CSS en Vite als moderne build tool.
 
 ## 📄 Licentie
 
