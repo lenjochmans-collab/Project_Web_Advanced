@@ -138,8 +138,14 @@ Wijzigingen in code worden automatisch gereloaded in de browser. Geweldig voor d
 ### Production Build maken:
 
 ```bash
-npm run build
+npm run 
+
+
 ```
+
+### screenshots 
+Zie folder screenshots voor een voorbeelt van de website.
+[screenshots](https://vscode.dev/github/lenjochmans-collab/Project_Web_Advanced/blob/main/screenshots)
 
 Dit genereert een geoptimaliseerde `dist/` folder klaar voor deployment. Deze folder bevat minified code en assets.
 
@@ -240,40 +246,6 @@ De applicatie is geoptimaliseerd voor het beste gebruikerservaring:
 
 **Feedback op Acties:** Wanneer gebruikers een favorieet toevoegen, verandert het hart icoon visueel en wordt feedback gegeven. Filters tonen laadstate terwijl API call in progress is.
 
-## 📝 Git Commits
-
-Het project bevat meerdere significante commits die de development progression tonen:
-
-1. **Initial Setup** - Project structure en HTML framework
-2. **API Integration** - Fetch implementation en data retrieval
-3. **UI Display** - Filmkaarten rendering met styling
-4. **Filter System** - Alle filteropties implementatie
-5. **Search Feature** - Zoekfunctionaliteit toevoegen
-6. **Favorites** - LocalStorage favorieten system
-7. **Dark Mode** - Theme toggle en CSS variables
-8. **Detail Modal** - Volledige detail view implementatie
-9. **UX Improvements** - Polish en responsiveness
-10. **README** - Complete documentatie
-
-Dagelijkse commits werden gedaan per feature component.
-
-## 📖 Gebruikte Bronnen en Referenties
-
-**Officiële Documentatie:**
-- [TMDB API Documentatie](https://developer.themoviedb.org/docs) - API endpoints en authentication
-- [MDN JavaScript Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference) - JavaScript language features
-- [MDN Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) - Browser APIs zoals Fetch, LocalStorage
-- [MDN CSS Reference](https://developer.mozilla.org/en-US/docs/Web/CSS) - CSS properties en selectors
-
-**Learning Resources:**
-- [CSS Tricks - Flexbox Complete Guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) - Flexbox layout patterns
-- [CSS Tricks - Grid Complete Guide](https://css-tricks.com/snippets/css/complete-guide-grid/) - CSS Grid mastery
-- [JavaScript.info - Modern JavaScript](https://javascript.info/) - Comprehensive JavaScript tutorial
-
-**Tools & Utilities:**
-- GitHub for version control en repository hosting
-- VS Code als code editor
-- Modern browsers (Chrome, Firefox, Safari, Edge) voor testing
 
 ## ✍️ AI Assistentie
 
