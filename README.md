@@ -247,14 +247,72 @@ De applicatie is geoptimaliseerd voor het beste gebruikerservaring:
 **Feedback op Acties:** Wanneer gebruikers een favorieet toevoegen, verandert het hart icoon visueel en wordt feedback gegeven. Filters tonen laadstate terwijl API call in progress is.
 
 
-## ✍️ AI Assistentie
+🤖 AI Gebruik & Ontwikkelproces
+Tijdens dit project heb ik gebruik gemaakt van verschillende AI-tools om mijn workflow te versnellen en mijn code te verbeteren. Hieronder leg ik uit hoe ik AI concreet heb ingezet.
 
-GitHub Copilot werd gebruikt als coding assistant voor:
-- Suggesties voor API integration patterns
-- Best practices voor DOM manipulation
-- CSS layout optimization
-- Error handling strategies
-- Code completion en snippets
+🛠️ Gebruikte tools
+
+GitHub Copilot (VS Code)
+Voor inline code suggesties, autocompletion en kleine verbeteringen tijdens het typen
+AI (ChatGPT / Claude)
+Voor layout generatie, debugging en hulp bij problemen
+
+
+📋 Ontwikkelproces
+1. Basis layout genereren
+Ik begon met het laten maken van een basis layout via AI.
+Prompt:
+maak een basis layout voor een pagina waar je film kan bekijken met zoek sorteer en favorieten opties
+
+De AI gaf mij een eerste ontwerp voor de pagina.
+Daarna heb ik deze handmatig aangepast:
+
+Layout verbeterd
+Styling aangepast naar mijn eigen voorkeur
+Spacing en kleuren verfijnd
+
+
+2. Gebruik van GitHub Copilot
+Tijdens het coderen hielp GitHub Copilot mij met:
+
+Automatische code-aanvullingen
+CSS suggesties
+Sneller schrijven van functies
+
+Dit maakte het ontwikkelproces efficiënter.
+
+3. API integratie (problemen)
+Ik probeerde zelf de API te integreren, maar kreeg meerdere errors:
+
+API werkte niet correct
+Data werd niet goed opgehaald
+Code gaf fouten
+
+Mijn eerste aanpak was om kleine delen aan te passen, maar dat werkte niet.
+
+4. Debugging met AI
+Daarna heb ik AI om hulp gevraagd.
+Prompt:
+mijn api werkt niet wat is er fout
+
+5. Verdere verbeteringen
+Na de werkende oplossing heb ik zelf aanpassingen gedaan:
+
+Functionaliteit getest
+Kleine bugs opgelost
+Layout verder verbeterd
+
+Wanneer iets niet werkte, gebruikte ik opnieuw AI.
+Voorbeeld prompt:
+verdubbel het aantal films op 1 pagina
+
+
+6. README genereren
+Tot slot heb ik AI gebruikt om een README te schrijven.
+Prompt:
+schrijf een read me 'cursusinfo'
+
+Daarna heb ik deze README zelf aangepast en aangevuld.
 
 ## 📋 Volledigheid Checklist
 
