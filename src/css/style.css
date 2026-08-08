@@ -222,20 +222,20 @@ body.dark-mode .filter-bar {
 }
 
 .filter-bar-content {
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
-    gap: 1.5rem;
+    gap: 1.25rem;
     align-items: flex-end;
     flex-wrap: wrap;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
 }
 
 .filter-item {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
-    min-width: fit-content;
+    min-width: 140px;
 }
 
 .filter-item label {
