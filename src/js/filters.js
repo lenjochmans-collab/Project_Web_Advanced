@@ -1,58 +1,35 @@
-/**
- * Filters Module
- * Verzorgt filter functionaliteit
- */
-
 import { getFilteredMovies, getGenres } from './api.js';
 import { displayMovies, loadMovies } from './ui.js';
 
-/**
- * Initialiseert filter module
- */
 export function initFilters() {
     console.log('Filters initialiseren...');
-
-    // Event listeners
     document.getElementById('applyFilters').addEventListener('click', applyFilters);
     document.getElementById('resetFilters').addEventListener('click', resetFilters);
-
-    // Rating slider
     const ratingFilter = document.getElementById('ratingFilter');
     const ratingValue = document.getElementById('ratingValue');
     ratingFilter.addEventListener('input', (e) => {
         ratingValue.textContent = e.target.value;
     });
-
-    // Load genres
     loadGenres();
 }
 
-/**
- * Laadt genres in dropdown
- */
 async function loadGenres() {
     try {
         const genres = await getGenres();
-        // Genres zijn al hardcoded in HTML, maar dit kan gebruikt worden voor dynamisch laden
         console.log('Genres geladen:', genres);
     } catch (error) {
         console.error('Fout bij laden genres:', error);
     }
 }
 
-/**
- * Appliceert geselecteerde filters
- */
 async function applyFilters() {
     console.log('Filters toepassen...');
-
     const typeFilterEl = document.getElementById('typeFilter');
     const genreFilter = document.getElementById('genreFilter').value;
     const yearFilter = document.getElementById('yearFilter').value;
     const ratingFilter = parseFloat(document.getElementById('ratingFilter').value) || 0;
     const sortFilter = document.getElementById('sortFilter').value;
     const languageFilter = document.getElementById('languageFilter').value;
-
     const filters = {
         withGenres: genreFilter || undefined,
         primaryReleaseYear: yearFilter || undefined,
@@ -61,21 +38,13 @@ async function applyFilters() {
         withOriginalLanguage: languageFilter || undefined,
         page: 1
     };
-
-    // Verwijder undefined waarden
     Object.keys(filters).forEach(key => {
-        if (filters[key] === undefined || filters[key] === '') {
-            delete filters[key];
-        }
+        if (filters[key] === undefined || filters[key] === '') delete filters[key];
     });
-
     console.log('Toegepaste filters:', filters);
-
     const container = document.getElementById('moviesContainer');
     container.innerHTML = '<div class="loading">Films filteren...</div>';
-
     try {
-        // Dynamisch import om circular dependency te voorkomen
         const { setFilters } = await import('./ui.js');
         await setFilters(filters);
     } catch (error) {
@@ -84,12 +53,8 @@ async function applyFilters() {
     }
 }
 
-/**
- * Reset alle filters naar standaardwaarden
- */
 function resetFilters() {
     console.log('Filters reset...');
-
     const typeFilterEl = document.getElementById('typeFilter');
     const genreFilter = document.getElementById('genreFilter');
     const yearFilter = document.getElementById('yearFilter');
@@ -97,15 +62,12 @@ function resetFilters() {
     const ratingValue = document.getElementById('ratingValue');
     const sortFilter = document.getElementById('sortFilter');
     const languageFilter = document.getElementById('languageFilter');
-
     if (genreFilter) genreFilter.value = '';
     if (yearFilter) yearFilter.value = '';
     if (ratingFilter) ratingFilter.value = '0';
     if (ratingValue) ratingValue.textContent = '0';
     if (sortFilter) sortFilter.value = 'popularity';
     if (languageFilter) languageFilter.value = '';
-
-    // Laad populaire films opnieuw
     loadMovies();
 }
 

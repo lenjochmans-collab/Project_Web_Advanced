@@ -1,7 +1,3 @@
-/* ========================================
-   CSS Variables & Base Styles
-   ======================================== */
-
 :root {
     --primary-color: #4a5568;
     --secondary-color: #718096;
@@ -20,10 +16,10 @@
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 
-    /* Light Mode */
+    
     --bg: var(--light-bg);
     --card-bg: var(--light-card);
-    --text: var(--light-text);
+    --text: #000;
     --border: var(--border-light);
     --text-secondary: #718096;
 }
@@ -54,12 +50,8 @@ body {
     line-height: 1.6;
 }
 
-/* ========================================
-   Header - Professional Navigation
-   ======================================== */
-
 .header {
-    background: white;
+    background: var(--card-bg);
     border-bottom: 2px solid var(--border-light);
     padding: 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -97,7 +89,6 @@ body.dark-mode .header {
     white-space: nowrap;
 }
 
-/* Navigation Menu */
 .nav-menu {
     display: flex;
     gap: 0;
@@ -128,7 +119,6 @@ body.dark-mode .header {
     border-bottom-color: var(--primary-color);
 }
 
-/* Header Right (Search + Controls) */
 .header-right {
     display: flex;
     align-items: center;
@@ -201,10 +191,6 @@ body.dark-mode .header {
     background: rgba(245, 101, 101, 0.05);
     color: var(--danger);
 }
-
-/* ========================================
-   Filter Bar (Horizontal)
-   ======================================== */
 
 .filter-bar {
     background: #f7fafc;
@@ -293,10 +279,6 @@ body.dark-mode .filter-bar {
     margin-left: auto;
 }
 
-/* ========================================
-   Filter Buttons
-   ======================================== */
-
 .btn-apply,
 .btn-reset {
     padding: 0.65rem 1.2rem;
@@ -336,10 +318,6 @@ body.dark-mode .filter-bar {
     color: var(--accent-color);
 }
 
-/* ========================================
-   Main Container (Full Width)
-   ======================================== */
-
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -348,10 +326,6 @@ body.dark-mode .filter-bar {
     padding: 2rem 1rem;
     min-height: calc(100vh - 250px);
 }
-
-/* ========================================
-   Content Area
-   ======================================== */
 
 .content {
     width: 100%;
@@ -390,15 +364,17 @@ body.dark-mode .filter-bar {
     color: white;
 }
 
-/* ========================================
-   Movies Grid (Grid Layout)
-   ======================================== */
-
 .movies-grid {
     display: grid;
-    grid-template-columns: repeat(4, 2fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    justify-content: center;
     animation: fadeIn 0.5s ease-in;
+}
+
+.movies-grid .movie-card {
+    width: 200px;
+    max-width: 200px;
 }
 
 .movie-card {
@@ -427,9 +403,7 @@ body.dark-mode .filter-bar {
 
 .movie-poster {
     width: 100%;
-    height: 550px;
-  
-    aspect-ratio: 10 / 3;
+    height: 300px;
     object-fit: cover;
     background: linear-gradient(135deg, #cbd5e0, #a0aec0);
     display: flex;
@@ -437,6 +411,22 @@ body.dark-mode .filter-bar {
     justify-content: center;
     color: white;
     font-size: 3rem;
+}
+
+.movie-poster img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .movies-grid { grid-template-columns: repeat(1, 200px); gap: 0.75rem; }
+    .movie-poster { height: 180px; }
+}
+
+@media (min-width: 481px) and (max-width: 900px) {
+    .movies-grid { grid-template-columns: repeat(2, 200px); gap: 0.9rem; }
+    .movie-poster { height: 240px; }
 }
 
 .movie-info {
@@ -543,10 +533,6 @@ body.dark-mode .movie-info {
     border-color: var(--accent-color);
 }
 
-/* ========================================
-   List View
-   ======================================== */
-
 .movies-list {
     display: flex;
     flex-direction: column;
@@ -598,10 +584,6 @@ body.dark-mode .movie-info {
     color: var(--text-secondary);
 }
 
-/* ========================================
-   Loading & Empty States
-   ======================================== */
-
 .loading,
 .empty-state {
     grid-column: 1 / -1;
@@ -628,10 +610,6 @@ body.dark-mode .movie-info {
     font-size: 1.1rem;
 }
 
-/* ========================================
-   Footer
-   ======================================== */
-
 .footer {
     background: var(--card-bg);
     border-top: 1px solid var(--border);
@@ -651,10 +629,6 @@ body.dark-mode .movie-info {
     text-decoration: underline;
     color: var(--accent-color);
 }
-
-/* ========================================
-   Movie Details Modal
-   ======================================== */
 
 .modal {
     display: none;
@@ -824,10 +798,6 @@ body.dark-mode .movie-info {
     font-weight: 600;
 }
 
-/* ========================================
-   Animations
-   ======================================== */
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -842,10 +812,6 @@ body.dark-mode .movie-info {
 .movie-card {
     animation: fadeIn 0.4s ease-in-out;
 }
-
-/* ========================================
-   Responsive Design
-   ======================================== */
 
 @media (max-width: 1200px) {
     .header-container {
@@ -881,10 +847,6 @@ body.dark-mode .movie-info {
 }
 
 @media (max-width: 1024px) {
-/* ========================================
-   Featured Movie Section
-   ======================================== */
-
 .featured-section {
     margin: 2rem 0;
     padding: 2rem;
@@ -1187,9 +1149,7 @@ body.dark-mode .movie-info {
     }
 }
 
-/* ========================================
-   Pagination Controls
-   ======================================== */
+
 
 .pagination-controls {
     display: flex;
@@ -1316,7 +1276,7 @@ body.dark-mode .movie-info {
     box-shadow: 0 1px 4px rgba(74, 85, 104, 0.15);
 }
 
-/* Responsive Pagination */
+ 
 @media (max-width: 768px) {
     .pagination-controls {
         gap: 1rem;
